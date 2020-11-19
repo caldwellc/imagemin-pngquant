@@ -2,7 +2,10 @@
 const execa = require('execa');
 const isPng = require('is-png');
 const isStream = require('is-stream');
-const pngquant = require('pngquant-bin');
+const path = require('path');
+const isElectron = process !== null && process !== undefined && 'electron' in process.versions;
+const useUnpacked = isElectron && __dirname.indexOf('app.asar') !== -1;
+const pngquant = require(useUnpacked ? path.join(__dirname, '..', 'pngquant-bin').replace('app.asar', 'app.asar.unpacked') : 'pngquant-bin');
 const ow = require('ow');
 
 const imageminPngquant = (options = {}) => input => {
